@@ -56,7 +56,16 @@ function this.initial_effect(c)
 		Duel.RegisterEffect(es9,0)
 		Duel.RegisterFlagEffect(0,cc,0,0,1)
 		Duel.RegisterFlagEffect(1,cc,0,0,1)
+		local es10=es1:Clone()
+		es10:SetCode(EFFECT_DRAW_COUNT)
+		es10:SetValue(0)
+		es10:SetCondition(this.con6)
+		Duel.RegisterEffect(es10,0)
 	end
+end
+
+function this.con6()
+	return this.isTag and Duel.GetTurnCount()==3
 end
 
 function this.con1()
@@ -233,11 +242,7 @@ function this.op(e,tp)
 	if not this.isTag or Duel.GetTurnCount()==5 then
 		this.isPicking=false
 	end
-	if Duel.GetTurnCount()==1 then
-		Duel.Draw(0,5,REASON_RULE)
-	else
-		Duel.Draw(0,4,REASON_RULE)
-	end
+	Duel.Draw(0,5,REASON_RULE)
 	Duel.Draw(1,5,REASON_RULE)
 	this.reroll(0)
 	this.reroll(1)
