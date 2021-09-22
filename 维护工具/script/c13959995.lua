@@ -2,7 +2,7 @@
 c13959997={}
 Duel.LoadScript("c13959997.lua")
 tpu=c13959997
-cl=c13959996
+--cl=c13959996
 
 local cc=13959995
 local this=_G["c"..cc]
@@ -33,8 +33,10 @@ function this.ccSelect(tp,g)
 end
 
 function this.op1(e,tp)
-	local ml,el,mat,eat=tpu.loadCardList(false,true)
-	Debug.Message("已从c13959996.lua加载卡表")
+	this.clCode=({13959996,13959994})[Duel.SelectOption(0,aux.Stringid(13959997,7),aux.Stringid(13959997,8))+1]
+	local ml,el,mat,eat=tpu.loadCardList(false,true,this.clCode)
+	cl=_G["c"..this.clCode]
+	Debug.Message("已从c"..this.clCode..".lua加载卡表")
 	Debug.Message("主卡组数量："..#ml)
 	Debug.Message("额外卡组数量："..#el)
 	local quit=false
@@ -199,8 +201,8 @@ function this.op1(e,tp)
 			end
 			cl.Main=tpu.dumpSet(fml)
 			cl.Extra=tpu.dumpSet(fel)
-			local f=io.open("2pick/c13959996.lua","w")
-			f:write(this.template)
+			local f=io.open("2pick/c"..this.clCode..".lua","w")
+			f:write(this.template:format(this.clCode))
 			f:write("this.Main=\""..cl.Main.."\"\n")
 			f:write("this.Extra=\""..cl.Extra.."\"\n")
 			f:write("this.BlackList=\""..cl.BlackList.."\"\n")
@@ -213,4 +215,4 @@ function this.op1(e,tp)
 	end
 end
 
-this.template="--2pick Card List\n\nlocal cc=13959996\nlocal this=_G[\"c\"..cc]\n\nfunction this.initial_effect(c)\n\nend\n\n"
+this.template="--2pick Card List\n\nlocal cc=%s\nlocal this=_G[\"c\"..cc]\n\nfunction this.initial_effect(c)\n\nend\n\n"
