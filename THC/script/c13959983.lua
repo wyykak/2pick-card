@@ -46,15 +46,18 @@ function this.op1(e,tp,eg,ep,ev,re,r,rp)
 	if not tc or not tc:IsRelateToEffect(e) or not this.filter1(tc) then
 		return
 	end
-	local e1=Effect.CreateEffect(e:GetHandler())
-	e1:SetType(EFFECT_TYPE_SINGLE)
-	e1:SetProperty(EFFECT_FLAG_SINGLE_RANGE|EFFECT_FLAG_CANNOT_DISABLE|EFFECT_FLAG_UNCOPYABLE)
-	e1:SetRange(LOCATION_MZONE)
-	e1:SetCode(EFFECT_CHANGE_LEVEL)
-	e1:SetValue(tc:GetLevel())
-	e1:SetReset(RESETS_STANDARD)
+	
 	local g=Duel.GetFieldGroup(tp,LOCATION_MZONE,0)
-	g:ForEach(function(c) c:RegisterEffect(e1) end)
+	g:ForEach(function(c)
+		local e1=Effect.CreateEffect(e:GetHandler())
+		e1:SetType(EFFECT_TYPE_SINGLE)
+		e1:SetProperty(EFFECT_FLAG_SINGLE_RANGE|EFFECT_FLAG_CANNOT_DISABLE|EFFECT_FLAG_UNCOPYABLE)
+		e1:SetRange(LOCATION_MZONE)
+		e1:SetCode(EFFECT_CHANGE_LEVEL)
+		e1:SetValue(tc:GetLevel())
+		e1:SetReset(RESETS_STANDARD)
+		c:RegisterEffect(e1)
+	end)
 end
 
 function this.cost2(e,tp,eg,ep,ev,re,r,rp,chk)
