@@ -11,6 +11,8 @@ this.extracount=20
 this.useBanList=true
 this.skillEnabled=false
 this.CardList={}
+this.clCode=13959996
+this.drawCount=5
 
 function this.initial_effect(c)
 	if not this.gc then
@@ -151,6 +153,7 @@ function this.op(e,tp)
 	end
 	this.saveDeck(0)
 	this.saveDeck(1)
+	this.drawCount=Duel.GetFieldGroupCount(0,LOCATION_HAND,0)
 	Duel.Exile(Duel.GetFieldGroup(0,LOCATION_DECK|LOCATION_EXTRA|LOCATION_HAND,LOCATION_DECK|LOCATION_EXTRA|LOCATION_HAND),REASON_RULE)
 	if Duel.GetTurnCount()==1 then
 		this.isTag=Duel.SelectYesNo(0,aux.Stringid(cc,8))
@@ -238,8 +241,8 @@ function this.op(e,tp)
 	if not this.isTag or Duel.GetTurnCount()==5 then
 		this.isPicking=false
 	end
-	Duel.Draw(0,5,REASON_RULE)
-	Duel.Draw(1,5,REASON_RULE)
+	Duel.Draw(0,this.drawCount,REASON_RULE)
+	Duel.Draw(1,this.drawCount,REASON_RULE)
 	this.reroll(0)
 	this.reroll(1)
 	this.isPicking=false
