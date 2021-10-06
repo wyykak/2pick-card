@@ -186,7 +186,7 @@ function this.op(e,tp)
 			end
 			this.useBanList=Duel.SelectYesNo(0,aux.Stringid(13959997,2))
 			if Duel.SelectYesNo(0,aux.Stringid(13959997,6)) then
-				this.clCode=({13959996,13959994})[Duel.SelectOption(0,aux.Stringid(13959997,7),aux.Stringid(13959997,8))+1]
+				this.clCode=({13959996,13959994,13959999})[Duel.SelectOption(0,aux.Stringid(13959997,7),aux.Stringid(13959997,8),aux.Stringid(13959997,9))+1]
 			end
 		end
 		this.option=Duel.SelectOption(0,aux.Stringid(cc,0),aux.Stringid(cc,1),aux.Stringid(cc,6),aux.Stringid(cc,7),aux.Stringid(cc,11),aux.Stringid(cc,10),aux.Stringid(13959997,4),aux.Stringid(13959997,5))
@@ -399,29 +399,49 @@ function this.custompick(mainc,extrac,packc)
 end
 
 function this.setOverride()
-	Card.IsSetCard=aux.TRUE
-	Card.IsPreviousSetCard=aux.TRUE
-	Card.IsFusionSetCard=aux.TRUE
-	Card.IsLinkSetCard=aux.TRUE
-	Card.IsOriginalSetCard=aux.TRUE
+    Card.IsSetCard=aux.TRUE
+    Card.IsPreviousSetCard=aux.TRUE
+    Card.IsFusionSetCard=aux.TRUE
+    Card.IsLinkSetCard=aux.TRUE 
+    Card.IsOriginalSetCard=aux.TRUE
+    Card.IsFusionSetCard=aux.TRUE
+    aux.IsMaterialListSetCard=aux.TRUE
 end
 
+function this.GetChainInfo(ev,...)
+    local code_list={...}
+    local chaininfolist={}
+    for i,v in ipairs(code_list) do
+        if v == CHAININFO_TRIGGERING_RACE then
+            table.insert(chaininfolist,RACE_ALL)
+        elseif v == CHAININFO_TRIGGERING_ATTRIBUTE then
+            table.insert(chaininfolist,0x7f)
+        else
+            table.insert(chaininfolist,this.GetChainInfotmp(ev,v))
+        end
+    end
+    return table.unpack(chaininfolist)
+end
 function this.raceOverride()
-	Card.IsRace=function(c) return c and c:IsType(TYPE_MONSTER) end
-	Card.IsLinkRace=function(c) return c and c:IsType(TYPE_MONSTER) end
-	Card.GetRace=function(c) if c and c:IsType(TYPE_MONSTER) then return RACE_ALL end return nil end
-	Card.GetLinkRace=function(c) if c and c:IsType(TYPE_MONSTER) then return RACE_ALL end return nil end
-	Card.GetOriginalRace=function(c) if c and c:GetOriginalType()&TYPE_MONSTER>0 then return RACE_ALL end return nil end
+    Card.IsRace=function(c) return c and c:IsType(TYPE_MONSTER) end
+    Card.IsLinkRace=function(c) return c and c:IsType(TYPE_MONSTER) end
+    Card.GetRace=function(c) if c and c:IsType(TYPE_MONSTER) then return RACE_ALL end return nil end
+    Card.GetLinkRace=function(c) if c and c:IsType(TYPE_MONSTER) then return RACE_ALL end return nil end
+    Card.GetOriginalRace=function(c) if c and c:GetOriginalType()&TYPE_MONSTER>0 then return RACE_ALL end return nil end
+    Card.GetPreviousRaceOnField=function(c) if c and c:IsType(TYPE_MONSTER) then return RACE_ALL end return nil end
+    this.GetChainInfotmp=Duel.GetChainInfo
+    Duel.GetChainInfo=this.GetChainInfo
 end
 
 function this.attrOverride()
-	Card.IsAttribute=function(c) return c and c:IsType(TYPE_MONSTER) end
-	Card.IsFusionAttribute=function(c) return c and c:IsType(TYPE_MONSTER) end
-	Card.IsLinkAttribute=function(c) return c and c:IsType(TYPE_MONSTER) end
-	Card.GetAttribute=function(c) if c and c:IsType(TYPE_MONSTER) then return 0x7f end return nil end
-	Card.GetFusionAttribute=function(c) if c and c:IsType(TYPE_MONSTER) then return 0x7f end return nil end
-	Card.GetLinkAttribute=function(c) if c and c:IsType(TYPE_MONSTER) then return 0x7f end return nil end
-	Card.GetOriginalAttribute=function(c) if c and c:GetOriginalType()&TYPE_MONSTER>0 then return 0x7f end return nil end
+    Card.IsAttribute=function(c) return c and c:IsType(TYPE_MONSTER) end
+    Card.IsFusionAttribute=function(c) return c and c:IsType(TYPE_MONSTER) end
+    Card.IsLinkAttribute=function(c) return c and c:IsType(TYPE_MONSTER) end
+    Card.GetAttribute=function(c) if c and c:IsType(TYPE_MONSTER) then return 0x7f end return nil end
+    Card.GetFusionAttribute=function(c) if c and c:IsType(TYPE_MONSTER) then return 0x7f end return nil end
+    Card.GetLinkAttribute=function(c) if c and c:IsType(TYPE_MONSTER) then return 0x7f end return nil end
+    Card.GetOriginalAttribute=function(c) if c and c:GetOriginalType()&TYPE_MONSTER>0 then return 0x7f end return nil end
+    Card.GetPreviousAttributeOnField=function(c) if c and c:GetOriginalType()&TYPE_MONSTER>0 then return 0x7f end return nil end
 end
 
 function this.ritualEnhance(c)
