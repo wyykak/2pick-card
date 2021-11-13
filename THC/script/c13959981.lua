@@ -49,7 +49,7 @@ function this.tg1(e,tp,eg,ep,ev,re,r,rp,chk)
 end
 
 function this.op1(e,tp,eg,ep,ev,re,r,rp)
-	local tc=Duel.CreateToken(tp,24094653)
+	local tc=Duel.CreateToken(tp,24235)
 	Duel.SendtoHand(tc,tp,REASON_EFFECT)
 	Duel.ConfirmCards(1-tp,tc)
 end
